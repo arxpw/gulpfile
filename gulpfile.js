@@ -17,9 +17,9 @@ gulp.task( 'scripts', function () {
    
     return gulp.src([
         // Uncomment the line below and change the path to the node_module you need
-        'node_modules/path-to-package/dist/index.js',
-        src + 'js/vendor/*.js',
-        src + 'js/*.js'
+        //'node_modules/path-to-package/dist/index.js',
+        src + '/js/vendor/*.js',
+        src + '/js/*.js'
     ])
     .pipe( concat( 'main.js' ) )
     .pipe( rename( { suffix: '.min' } ) )
@@ -44,11 +44,11 @@ gulp.task( 'sass', function () {
 gulp.task( 'watch', function () {
     
     // Watch .js files
-    gulp.watch( src + 'js/vendor/*.js', ['scripts'] );
-    gulp.watch( src + 'js/*.js', ['scripts'] );
+    gulp.watch( src + '/js/vendor/*.js', ['scripts'] );
+    gulp.watch( src + '/js/*.js', ['scripts'] );
 
     // Watch .scss files
-    gulp.watch( src + 'css/scss/**/*.scss', ['sass'] );
+    gulp.watch( src + '/css/scss/**/*.scss', ['sass'] );
 
 });
 
