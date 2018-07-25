@@ -12,12 +12,15 @@ var autoprefixer = require('gulp-autoprefixer');
 var src  = 'src';
 var dist = 'dist';
 
+var dep_src = 'node_modules';
+
 // Concatenate & Minify JS
 gulp.task( 'scripts', function () {
    
     return gulp.src([
         // Uncomment the line below and change the path to the node_module you need
         //'node_modules/path-to-package/dist/index.js',
+        `${dep_src}/jquery/dist/jquery.min.js`,
         src + '/js/vendor/*.js',
         src + '/js/*.js'
     ])
