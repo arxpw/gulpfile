@@ -1,59 +1,32 @@
-// Include Gulp
-var gulp = require('gulp');
+var gulp   = require('gulp');
+var sass   = require('gulp-sass');
+var concat = require('gulp-concat');
 
-// Include plugins
-var concat       = require('gulp-concat');
-var uglify       = require('gulp-uglify');
-var rename       = require('gulp-rename');
-var sass         = require('gulp-ruby-sass');
-var autoprefixer = require('gulp-autoprefixer');
+gulp.task('css', function() {
+  gulp.src('./sass/main.scss')
+      .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+      .pipe(concat('production.css'))
+      .pipe(gulp.dest('./css/'));
+});
 
-// Define the base folders
-var src  = 'src';
-var dist = 'dist';
-
-var dep_src = 'node_modules';
-
-// Concatenate & Minify JS
-gulp.task( 'scripts', function () {
-   
-    return gulp.src([
-        // Uncomment the line below and change the path to the node_module you need
-        //'node_modules/path-to-package/dist/index.js',
-        `${dep_src}/jquery/dist/jquery.min.js`,
-        src + '/js/vendor/*.js',
-        src + '/js/*.js'
+gulp.task('js', function() {
+  return gulp.src(
+    [
+      './js/jquery.matchHeight.min.js',
+      './js/jquery.carouselTicker.js',
+      // './js/bootstrap.min.js',
+      './js/calc.min.js',
+      './js/jquery.lazy.min.js',
+      './js/slick.min.js',
+      // './js/bootstrap-select.min.js',
+      './js/javascript.js'
     ])
-    .pipe( concat( 'main.js' ) )
-    .pipe( rename( { suffix: '.min' } ) )
-    .pipe( uglify() )
-    .pipe( gulp.dest( dist + '/js' ) );
-    
+  .pipe(concat('production.js'))
+  .pipe(gulp.dest('./js/'));
+})
+
+//Watch task
+gulp.task('default',function() {
+    gulp.watch('sass/**/*.scss', ['css']);
+    gulp.watch('js/**/*.js',     ['js']);
 });
-
-gulp.task( 'sass', function () {
-
-    return sass(src + '/scss/main.scss', { style: 'compressed' })
-        .pipe( autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))
-        .pipe( gulp.dest( dist + '/css' ) )
-        .pipe( rename( { suffix: '.min' } ) )
-        .pipe( gulp.dest( dist + '/css' ) );
-
-});
-
-gulp.task( 'watch', function () {
-    
-    // Watch .js files
-    gulp.watch( src + '/js/vendor/*.js', ['scripts'] );
-    gulp.watch( src + '/js/*.js', ['scripts'] );
-
-    // Watch .scss files
-    gulp.watch( src + '/css/scss/**/*.scss', ['sass'] );
-
-});
-
-// Default Task
-gulp.task( 'default', ['scripts', 'sass', 'watch'] );
